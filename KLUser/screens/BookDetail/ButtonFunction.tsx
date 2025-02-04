@@ -1,27 +1,83 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useEffect, useRef, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
+import { useAuth } from "../../hooks/Auth/authContext";
+import apiClient from "../../hooks/ApiRequest/apiClient";
+import { useRoute } from "@react-navigation/native";
+import SnackBarCustom, { SnackBarCustomRef } from "../../common/SnackBar";
 
 const ButtonFunction = () => {
+    const route = useRoute<any>()
+    const bookID = route.params.idBook;
+    const { user } = useAuth();
+    const [like, setLike] = useState(false)
+
+
+    const checkBookInFavourite = async () => {
+        try {
+            const response = await apiClient.get(`accounts/${bookID}/favourite/${user?.id}`);
+            if (response.data === true) {
+                setLike(true)
+            } else {
+                setLike(false)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const addToFavourite = async () => {
+        try {
+            await apiClient.post("accounts/add", {
+                userId: user?.id,
+                bookId: bookID
+            })
+            checkBookInFavourite()
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+
+        checkBookInFavourite()
+    }, [])
+
+    // console.log(user)
     return (
         <View style={styles.container}>
-            <View style={[styles.button, { width: "48%", backgroundColor: "#8bc34a" }]}>
-                <TouchableOpacity style={styles.touch}>
+            {/* <TouchableOpacity style={[styles.button, { width: "48%", backgroundColor: "#8bc34a" }]}>
+                <View style={styles.touch}>
+
                     <Ionicons name='book' color={"white"} />
                     <Text style={styles.functionText}>Đọc từ đầu</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={[styles.button, { width: "48%", backgroundColor: "#ff3860" }]}>
-                <TouchableOpacity style={styles.touch}>
+                </View>
+
+            </TouchableOpacity> */}
+            <TouchableOpacity style={[styles.button, { width: "48%", backgroundColor: "#ff3860" }]}>
+
+                <View style={styles.touch}>
                     <Ionicons name='heart' color={"white"} />
                     <Text style={styles.functionText}>Theo dõi</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={[styles.button, { width: "40%", backgroundColor: "#bd10e0" }]}>
-                <TouchableOpacity style={styles.touch}>
-                    <Ionicons name='thumbs-up' color={"white"} />
-                    <Text style={styles.functionText}>Thích</Text>
-                </TouchableOpacity>
-            </View>
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={[styles.button, { width: "48%", backgroundColor: "#bd10e0" }]} onPress={addToFavourite}>
+                {
+                    like ?
+                        <View style={[styles.touch]}>
+                            <Ionicons name='thumbs-up' color={"white"} />
+                            <Text style={[styles.functionText]}>Đã Thích</Text>
+                        </View>
+                        :
+                        <View style={styles.touch}>
+                            <Ionicons name='thumbs-up' color={"white"} />
+                            <Text style={styles.functionText}>Thích</Text>
+                        </View>
+                }
+
+            </TouchableOpacity>
+
+
         </View>
     )
 }

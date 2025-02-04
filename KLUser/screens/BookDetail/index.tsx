@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, Image, ScrollView } from 'react-native';
 import { FONT, SIZES } from '../../hooks/useTheme';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,25 +8,71 @@ import ButtonFunction from './ButtonFunction';
 import Introduction from './Introduction';
 import Chapters from './Chapters';
 import Comments from './Comments';
+import ButtonBack from '../../common/ButtonBack';
+import { useRoute } from '@react-navigation/native';
+import apiClient from '../../hooks/ApiRequest/apiClient';
+import { baseURL } from '../../constants';
 
-export default function BookDetail({ navigation }: any) {
+type BookInfor = {
+    id: number;
+    book_name: string;
+    other_name: string;
+    artist: string;
+    cover_image: string;
+    nation: string;
+    status: string;
+    like_vote: number;
+    follow: number;
+    vote: number;
+    create_at: string;  // ISO 8601 format timestamp
+    update_at: string;  // ISO 8601 format timestamp
+    description: string;
+};
+
+export default function BookDetail() {
+    const route = useRoute<any>();
+    const bookId = route.params.idBook;
+
+    const [bookInfor, setBookInfor] = useState<BookInfor | null>(null)
+    const getBookInformation = async () => {
+        try {
+            const response = await apiClient.get(`books/${bookId}`);
+            setBookInfor(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getBookInformation()
+    })
     return (
         <ScrollView>
+            <View style={{ marginHorizontal: 20, marginTop: 10 }}>
+                <ButtonBack />
+
+            </View>
             <View style={styles.container}>
                 <View style={styles.title}>
                     <Image
                         style={styles.image}
-                        source={require('../../assets/one.jpg')} />
-                    <Text style={styles.bookName}>One PiecePiecePiecePiecePiecePiecePiecePiecePiecePiecePiece</Text>
+                        source={{ uri: `${baseURL}/${bookInfor?.cover_image}` }} />
+                    <Text style={styles.bookName}>{bookInfor?.book_name}</Text>
                 </View>
 
-                <InformationBook />
-                <BookGenre />
+                <InformationBook otherName={bookInfor?.other_name}
+                    artist={bookInfor?.artist}
+                    status={bookInfor?.status}
+                    likeVote={bookInfor?.like_vote}
+                    follow={bookInfor?.follow}
+                    vote={bookInfor?.vote}
+                />
+                <BookGenre id={Number(bookId)} />
                 <ButtonFunction />
-                <Introduction />
-                <Chapters />
+                <Introduction introduction={bookInfor?.description} />
+                <Chapters id={Number(bookId)} />
 
-                <Comments />
+                <Comments bookId={bookId} />
             </View>
         </ScrollView>
     );
@@ -38,7 +84,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         // alignItems: 'center',
         backgroundColor: '#e9ecef',
-        marginTop: 30
+        marginTop: 20
     },
     title: {
         // width: "75%",
@@ -56,7 +102,9 @@ const styles = StyleSheet.create({
     bookName: {
         fontSize: SIZES.large,
         fontWeight: 700,
-        maxWidth: 300
+        maxWidth: 300,
+        textTransform: "capitalize",
+        padding: 5
     },
 
 });

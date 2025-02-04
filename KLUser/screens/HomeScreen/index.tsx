@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, DrawerLayoutAndroid, ScrollView } from 'react-native';
+import React, { useRef, useState, useCallback } from 'react';
+import { View, Text, Button, StyleSheet, TouchableOpacity, RefreshControl, ScrollView } from 'react-native';
 import Menu from './Menu';
 import { Ionicons } from '@expo/vector-icons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -8,20 +8,41 @@ import FavouriteBook from './FavouriteBook';
 import NewUpdateBook from './NewUpdateBook';
 import Footer from '../../common/Footer';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-import { HomeStackParamList } from '../../ScreenStack';
+import RankBook from '../RankBook';
+import SearchScreen from '../SearchScreen';
 import Comment from '../Comment';
 import Reading from '../Reading';
+import Header from '../../common/Header';
+import FilterGenre from '../FilterGenre';
+
 
 const Drawer = createDrawerNavigator();
 
 
 function Home({ navigation }: any) {
     const [isOpenMenu, setIsOpenMenu] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+    const [key, setKey] = useState(0); // Add key to force re-render
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+
+        // Simulate fetching new data
+        setTimeout(() => {
+            setKey(prevKey => (prevKey === 0 ? 1 : 0)); // Change key to force re-render
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     return (
 
-        <ScrollView style={styles.container}>
+        <ScrollView
+            key={key}
+            style={styles.container}
+
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
             <View style={styles.homeHeaderStyle}>
                 {/* <Text style={styles.title}>Trang chủ</Text> */}
                 <TouchableOpacity onPress={() => setIsOpenMenu(!isOpenMenu)}>
@@ -60,13 +81,23 @@ export default function HomeScreen() {
     return (
         <Stack.Navigator initialRouteName='HomeMain'
             screenOptions={{
-                headerShown: false
+                header: () => <Header />,
+                // headerShown: false
             }}>
 
             <Stack.Screen name="HomeMain" component={Home} />
             <Stack.Screen name="BookDetail" component={BookDetailScreen} />
+            <Stack.Screen name="Search" component={SearchScreen} />
             <Stack.Screen name="Comment" component={Comment} />
             <Stack.Screen name="Reading" component={Reading} />
+            <Stack.Screen name="FilterGenre" component={FilterGenre} />
+
+            {/* <Stack.Screen name="FilterGenre" component={FilterGenre} /> */}
+            {/* <Stack.Screen name="BookDetail" component={BookDetail} /> */}
+            {/* <Stack.Screen name="Comment" component={Comment} /> */}
+            {/* <Stack.Screen name="Reading" component={Reading} /> */}
+            <Stack.Screen name="RankBook" component={RankBook} />
+
         </Stack.Navigator>
     )
 }

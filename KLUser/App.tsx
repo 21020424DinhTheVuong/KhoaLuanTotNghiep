@@ -10,23 +10,19 @@ import Footer from './common/Footer';
 import SearchScreen from './screens/SearchScreen';
 import FilterGenre from './screens/FilterGenre';
 import BookDetail from './screens/BookDetail';
-
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator()
+import Comment from './screens/Comment';
+import Reading from './screens/Reading';
+import RankBook from './screens/RankBook';
+import Profile from './screens/Profile';
+import LoginRegister from './screens/LoginRegister';
+import ForumScreen from './screens/Fanpage';
+import { AuthProvider, useAuth } from './hooks/Auth/authContext';
+import AppNavigation from './AppNavigation';
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home"
-        screenOptions={{
-          header: ({ navigation }: any) => <Header navigation={navigation} />
-        }}>
+    <AuthProvider>
+      <AppNavigation />
+    </AuthProvider>
 
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Search" component={SearchScreen} />
-        <Stack.Screen name="FilterGenre" component={FilterGenre} />
-        <Stack.Screen name="BookDetail" component={BookDetail} />
-        {/* <Stack.Screen name="BookDetail" component={BookDetailScreen} /> */}
-      </Stack.Navigator>
-    </NavigationContainer>
   );
 }

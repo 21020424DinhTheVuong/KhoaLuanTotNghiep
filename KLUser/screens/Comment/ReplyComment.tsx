@@ -2,6 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '../../hooks/useTheme'
+import { baseURL, formatTimeAgo } from '../../constants'
+import apiClient from '../../hooks/ApiRequest/apiClient'
 
 const comments = Array.from({ length: 5 }, (_, index) => ({
     avatar: require("../../assets/avatar.png"),
@@ -11,20 +13,38 @@ const comments = Array.from({ length: 5 }, (_, index) => ({
     like: 345,
     dislike: 4543,
 }))
+
+type ReplyInterface = {
+    id: number;
+    content: string;
+    user: { display_name: string, avatar: string };
+    like: number;
+    // total_comment: number;
+    create_at: string;
+    timeAgo?: string
+}
+type ReplyData = {
+    replies: ReplyInterface[],
+    onLikeReply: (replyId: number) => void; // Ensure it expects two arguments
+}
 const { width, height } = Dimensions.get("window")
-const ReplyComment = () => {
+const ReplyComment = ({ replies, onLikeReply }: ReplyData) => {
     return (
         <View>
-            {comments.map((item, index) => (
+            {replies.map((item, index) => (
                 <View style={styles.commentContainer} key={index}>
-
-                    <Image source={item.avatar} style={styles.avatar} />
+                    {
+                        item.user.avatar ?
+                            <Image source={{ uri: `${baseURL}/${item.user.avatar}` }} style={styles.avatar} />
+                            :
+                            <Image source={require("../../assets/avatar.png")} style={styles.avatar} />
+                    }
 
                     <View style={styles.contentComment}>
                         <View style={styles.nameUser}>
 
-                            <Text style={{ fontWeight: 600 }}>{item.name}</Text>
-                            <Text>{item.time}</Text>
+                            <Text style={{ fontWeight: 600 }}>{item.user.display_name}</Text>
+                            <Text>{formatTimeAgo(item.create_at)}</Text>
                         </View>
 
                         <View>
@@ -35,25 +55,18 @@ const ReplyComment = () => {
                         </View>
 
                         <View style={styles.replyContainer}>
-                            <TouchableOpacity>
-                                <Text>
-                                    <Ionicons name='thumbs-up' />
-                                    {item.like}
-                                </Text>
+                            <TouchableOpacity onPress={() => onLikeReply(item.id)}>
+                                <Ionicons name='heart' color={"red"} size={16} />
                             </TouchableOpacity>
+                            <Text style={{ fontSize: 16 }}>
+                                {item.like}
+                            </Text>
 
-                            <TouchableOpacity>
-                                <Text>
-                                    <Ionicons name='thumbs-down' />
-                                    {item.dislike}
-                                </Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity>
-                                <Text style={{ textTransform: "uppercase", fontWeight: 600, color: "aqua" }}>
+                            {/* <TouchableOpacity>
+                                <Text style={{ textTransform: "uppercase", fontWeight: 600, color: "red" }}>
                                     Trả lời
                                 </Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                     </View>
                 </View>
@@ -105,8 +118,9 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         display: "flex",
         flexDirection: "row",
-        justifyContent: "flex-start",
-        columnGap: 20
+        alignItems: "center"
+        // justifyContent: "flex-start",
+        // columnGap: 20
     },
     viewReplies: {
         width: "50%"

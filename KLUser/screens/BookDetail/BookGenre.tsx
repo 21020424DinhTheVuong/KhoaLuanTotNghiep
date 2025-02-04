@@ -1,4 +1,7 @@
+import { useNavigation } from "@react-navigation/native"
+import { useEffect, useState } from "react"
 import { StyleSheet, Text, TouchableOpacity, View, FlatList } from "react-native"
+import apiClient from "../../hooks/ApiRequest/apiClient"
 
 const genres = [
     { id: 1, genre: "Comedy" },
@@ -7,16 +10,44 @@ const genres = [
     { id: 4, genre: "Shounen" },
     { id: 5, genre: "Kinh di" },
 ]
-const BookGenre = () => {
+type GenreInterface = {
+    id: number;
+    type: string
+}
+type IdBook = {
+    id: number
+}
+const BookGenre = ({ id }: IdBook) => {
+    const navigation = useNavigation<any>()
+
+    const [dataGenre, setDataGenre] = useState<GenreInterface[]>([])
+
+    const getBookGenre = async () => {
+        try {
+            const response = await apiClient.get(`books/${Number(id)}/genres`);
+            setDataGenre(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        getBookGenre()
+    }, [])
     return (
-        <View style={styles.container}>
-            {
-                genres.map((item) => (
-                    <TouchableOpacity key={item.id} style={styles.genre}>
-                        <Text style={styles.genreText}>{item.genre}</Text>
-                    </TouchableOpacity>
-                ))
-            }
+        <View >
+            {dataGenre.length > 0 && (
+                <View style={styles.container}>
+                    {dataGenre.map((item) => (
+                        <TouchableOpacity
+                            key={item.id}
+                            style={styles.genre}
+                            onPress={() => navigation.navigate("FilterGenre", { genre: item.type })}
+                        >
+                            <Text style={styles.genreText}>{item.type}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
+            )}
 
         </View>
     )

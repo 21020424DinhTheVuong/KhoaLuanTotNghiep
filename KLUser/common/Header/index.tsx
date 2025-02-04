@@ -1,9 +1,29 @@
 import { Ionicons } from "@expo/vector-icons";
-import React from "react"
+import React, { useCallback, useState } from "react"
 import { Text, StyleSheet, View, Image, TouchableOpacity, StatusBar } from "react-native"
 import { COLORS } from "../../hooks/useTheme";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../hooks/Auth/authContext";
+import { baseURL } from "../../constants";
+import apiClient from "../../hooks/ApiRequest/apiClient";
 
-export default function Header({ navigation }: any) {
+export default function Header() {
+    const navigation = useNavigation<any>()
+    const { user } = useAuth();
+    const [avatar, setAvatar] = useState(user?.avatar)
+    const getUserInfor = async () => {
+        try {
+            const response = await apiClient.get(`accounts/${user?.id}`);
+            setAvatar(response.data.avatar)
+        } catch (error) {
+
+        }
+    }
+    useFocusEffect(
+        useCallback(() => {
+            getUserInfor(); // Fetch fresh data when this screen is focused
+        }, [])
+    );
     return (
         <View style={styles.headerContainer}>
             <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
@@ -17,8 +37,13 @@ export default function Header({ navigation }: any) {
                     <Ionicons name='search-circle-outline' size={40} color={"white"} />
                 </TouchableOpacity>
 
-                <TouchableOpacity>
-                    <Image source={require("../../assets/avatar.png")} style={styles.avatar} />
+                <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
+                    {
+                        user?.avatar ?
+                            <Image source={{ uri: `${baseURL}/${avatar}` }} style={styles.avatar} />
+                            :
+                            <Image source={require("../../assets/avatar.png")} style={styles.avatar} />
+                    }
                 </TouchableOpacity>
             </View>
         </View>

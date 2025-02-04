@@ -1,11 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, Text, View, Image, Dimensions, Animated, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { baseURL } from "../../constants";
+import { formatTimeAgo } from "../../constants";
 
-type ImageURL = {
+type BookInfor = {
+    id: number
+    book_name: string;
+    create_at: string | any;
+    last_chapter: number;
     image_url: any,
 }
-export default function Book({ image_url }: ImageURL) {
+export default function Book({ id, image_url, book_name, create_at, last_chapter }: BookInfor) {
     const navigation = useNavigation<any>()
     const blinkOpacity = useRef(new Animated.Value(1)).current;
 
@@ -33,27 +39,29 @@ export default function Book({ image_url }: ImageURL) {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('BookDetail')}>
+            <TouchableOpacity onPress={() => navigation.navigate('BookDetail', { idBook: id })}>
                 <Image
                     style={styles.imageBook}
-                    source={image_url}
+                    source={{ uri: `${baseURL}/${image_url}` }}
                 />
             </TouchableOpacity>
             <View style={styles.timeUpdate}>
-                <Text style={styles.timeStampText}>11 phút trước</Text>
+                <Text style={styles.timeStampText}>{formatTimeAgo(create_at)}</Text>
                 <Animated.Text style={[styles.hotText, { opacity: blinkOpacity }]}>Hot</Animated.Text>
 
             </View>
             {/* <View style={styles.timeUpdate}>
             </View> */}
-            <TouchableOpacity>
-                <Text style={styles.bookName}>
-                    One Piece
+            <TouchableOpacity onPress={() => navigation.navigate('BookDetail', { idBook: id })}>
+                <Text style={styles.bookName}
+                    numberOfLines={1}
+                    ellipsizeMode="tail">
+                    {book_name}
                 </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity>
-                <Text>Chap 1113</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('BookDetail', { idBook: id })}>
+                <Text style={{ fontSize: 14 }}>Chap {last_chapter}</Text>
             </TouchableOpacity>
         </View>
     )
@@ -78,13 +86,14 @@ const styles = StyleSheet.create({
     },
     imageBook: {
         borderRadius: 10,
-        width: 200,
+        width: 140,
         height: 200,
         resizeMode: 'contain',
     },
     bookName: {
         fontWeight: 600,
-        fontSize: 18
+        fontSize: 15,
+        textTransform: "capitalize"
     },
     timeStampText: {
         color: "white",

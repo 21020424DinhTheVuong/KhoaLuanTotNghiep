@@ -1,8 +1,9 @@
 import React, { useState } from "react"
-import { Text, View, StyleSheet, FlatList, ScrollView, TouchableOpacity, Touchable } from "react-native"
+import { Text, View, StyleSheet, FlatList, ScrollView, TouchableOpacity, Touchable, Dimensions, Pressable } from "react-native"
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../../hooks/useTheme";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 
 const DATA = [
@@ -20,7 +21,8 @@ const DATA2 = [
     {
         id: '1',
         title: 'Diễn đàn',
-        link: "forum"
+        link: "forum",
+        screen: "ForumScreen"
     },
 ]
 const itemDropDownGenre = [
@@ -70,32 +72,31 @@ const itemDropDownGenre = [
     { id: 44, title: "Truyện Màu", link: "truyen-mau" },
     { id: 45, title: "Webtoon", link: "webtoon" },
     { id: 46, title: "Xuyên Không", link: "xuyen-khong" }
-  ]
-  
-
-const itemDropDownRank = [
-    { id: 1, title: "Top Ngày", link: "top-ngay" },
-    { id: 2, title: "Top Tuần", link: "top-tuan" },
-    { id: 3, title: "Top Tháng", link: "top-thang" },
-    { id: 4, title: "Yêu Thích", link: "yeu-thich" },
-    { id: 5, title: "Mới Cập Nhật", link: "moi-cap-nhat" },
-    { id: 6, title: "Truyện Mới", link: "truyen-moi" },
-    { id: 7, title: "Truyện Full", link: "truyen-full" },
-    { id: 8, title: "Truyện Ngẫu Nhiên", link: "truyen-ngau-nhien" }
 ]
 
-type ItemProps = { title: string };
-type ItemPropsDropDown = { title: string, icon: any, isOpen: boolean, toggle: any };
 
-const Item = ({ title }: ItemProps) => (
+const itemDropDownRank = [
+    // { id: 4, title: "Yêu Thích", link: "yeu-thich" },
+    // { id: 5, title: "Mới Cập Nhật", link: "moi-cap-nhat" },
+    { id: 6, title: "Truyện Mới", link: "Đang tiến hành" },
+    { id: 7, title: "Truyện Full", link: "Hoàn thành" },
+    // { id: 8, title: "Truyện Ngẫu Nhiên", link: "truyen-ngau-nhien" }
+]
+
+type ItemProps = { title: string, screen: string, action: any };
+type ItemPropsDropDown = { title: string, icon: any, isOpen: boolean, toggle: any, action: any };
+
+const Item = ({ title, screen, action }: ItemProps) => (
     <View>
         <View style={styles.item}>
-            <Text style={styles.title}>{title}</Text>
+            <TouchableOpacity onPress={() => { action(screen) }}>
+                <Text style={styles.title}>{title}</Text>
+            </TouchableOpacity>
         </View>
     </View>
 );
 
-const ItemDropDown = ({ title, icon, isOpen, toggle }: ItemPropsDropDown) => (
+const ItemDropDown = ({ title, icon, isOpen, toggle, action }: ItemPropsDropDown) => (
     <View>
         <TouchableOpacity style={styles.item} onPress={toggle}>
             <Text style={styles.title}>{title}</Text>
@@ -103,21 +104,20 @@ const ItemDropDown = ({ title, icon, isOpen, toggle }: ItemPropsDropDown) => (
         </TouchableOpacity>
         {
             isOpen &&
-            <View style={styles.itemChildren}>
+            <View style={[styles.itemChildren]}>
                 {
                     title === "Thể loại" ?
                         itemDropDownGenre.map((item) => (
-                            // <TouchableOpacity>
-                            // <TouchableOpacity key={item.id}>
-                            <Text key={item.id} style={styles.childItem}>{item.title}</Text>
-                            // </TouchableOpacity>
+                            <Pressable key={item.id} onPress={() => { action("FilterGenre", item.title) }}
+                            >
+                                <Text style={[styles.childItem, { width: Dimensions.get("window").width * 0.4, backgroundColor: "white" }]}>{item.title}</Text>
+                            </Pressable>
                         ))
                         :
                         itemDropDownRank.map((item) => (
-                            // <TouchableOpacity>
-                            <Text key={item.id} style={styles.childItem}>{item.title}</Text>
-                            // </TouchableOpacity>
-
+                            <TouchableOpacity key={item.id} onPress={() => { action("RankBook", { rank: item.title, status: item.link }) }}>
+                                <Text style={[styles.childItem, { width: Dimensions.get("window").width * 0.4, backgroundColor: "white" }]}>{item.title}</Text>
+                            </TouchableOpacity>
                         ))
                 }
             </View>
@@ -126,6 +126,7 @@ const ItemDropDown = ({ title, icon, isOpen, toggle }: ItemPropsDropDown) => (
     </View>
 );
 export default function Menu() {
+    const navigation = useNavigation<any>()
     const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
 
     const toggleDropdown = (id: string) => {
@@ -137,19 +138,7 @@ export default function Menu() {
 
     return (
         <View style={styles.container}>
-            {/* <FlatList
-                data={DATA}
-                renderItem={({ item }) => (
-                    <ItemDropDown
-                        title={item.title}
-                        icon={<Ionicons name="caret-down-outline" size={15} />}
-                        isOpen={!!openDropdowns[item.id]} // Check if the dropdown is open
-                        toggle={() => toggleDropdown(item.id)} // Pass the toggle function
-                    />
-                )}
-                keyExtractor={(item) => item.id}
-                scrollEnabled={false}
-            /> */}
+
             {
                 DATA.map((item) => (
                     <ItemDropDown
@@ -158,22 +147,20 @@ export default function Menu() {
                         icon={<Ionicons name="caret-down-outline" size={15} />}
                         isOpen={!!openDropdowns[item.id]} // Check if the dropdown is open
                         toggle={() => toggleDropdown(item.id)} // Pass the toggle function
+                        action={(type: any, title: any) => { navigation.navigate(type, { genre: title }) }}
                     />
                 ))
             }
 
-            {/* <FlatList
-                data={DATA2}
-                renderItem={({ item }) => <Item title={item.title} />}
-                keyExtractor={item => item.id}
-            /> */}
             {
                 DATA2.map((item) => (
-                    <TouchableOpacity key={item.id}>
-                        <Item
-                            key={item.id}
-                            title={item.title} />
-                    </TouchableOpacity>
+                    <Item
+                        key={item.id}
+                        title={item.title}
+                        screen={item.screen}
+                        action={(type: any) => { navigation.navigate(type) }}
+                    // action={(type: any) => { navigation.navigate("RankBook", { rank: type }) }}
+                    />
                 ))
             }
         </View>
@@ -198,7 +185,7 @@ const styles = StyleSheet.create({
     itemChildren: {
         flexDirection: 'row', // Items flow horizontally
         flexWrap: 'wrap', // Allow wrapping to multiple rows
-        gap: 10, // Space between items (React Native 0.71+)
+        gap: 10,
         marginTop: 8,
     },
     childItem: {

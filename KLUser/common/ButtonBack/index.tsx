@@ -16,7 +16,7 @@ export default ButtonBack;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#fff",
+        // backgroundColor: "#fff",
         width: 25,
         borderRadius: 5
     }

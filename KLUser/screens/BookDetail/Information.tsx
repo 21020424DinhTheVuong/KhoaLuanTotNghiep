@@ -1,7 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
 import { View, Text, StyleSheet } from "react-native"
 
-const InformationBook = () => {
+type InforBook = {
+    otherName: any,
+    artist: any,
+    status: any,
+    likeVote: any,
+    follow: any,
+    vote: any
+}
+const InformationBook = ({ otherName, artist, status, likeVote, follow, vote }: InforBook) => {
     return (
         <View>
             <View style={styles.inforContainer}>
@@ -12,7 +20,7 @@ const InformationBook = () => {
                 </View>
 
                 <View style={[styles.inforChildren, { maxWidth: "75%" }]}>
-                    <Text style={styles.title}>Vua Hải tặc, Đảo hải tặc, Vua Hải tặc</Text>
+                    <Text style={styles.title}>{otherName}</Text>
                 </View>
             </View>
 
@@ -23,26 +31,27 @@ const InformationBook = () => {
                         <Ionicons name="people" />
                         Tác giả</Text>
                     <Text style={styles.title}>
-                        <Ionicons name="wifi" />
+                        <Ionicons name="wifi" color={"blue"} />
                         Tình trạng</Text>
                     <Text style={styles.title}>
-                        <Ionicons name="thumbs-up" />
+                        <Ionicons name="thumbs-up" color={"blue"} />
                         Lượt thích</Text>
                     <Text style={styles.title}>
-                        <Ionicons name="heart" />
+                        <Ionicons name="heart" color={"red"} />
                         Lượt theo dõi</Text>
                     <Text style={styles.title}>
-                        <Ionicons name="eye" />
-                        Lượt xem</Text>
+                        <Ionicons name="star" color={"orange"} />
+                        Đánh giá</Text>
                 </View>
 
                 <View style={styles.inforChildren}>
                     {/* <Text>Vua Hải tặc, Đảo hải tặc, Vua Hải tặc, Đảo hải tặc, Vua Hải tặc, Đảo hải tặc</Text> */}
-                    <Text style={{ fontSize: 16 }}>Eichiiro Oda</Text>
-                    <Text style={styles.title}>Đang cập nhật</Text>
-                    <Text style={{ fontSize: 16 }}>34423</Text>
-                    <Text style={{ fontSize: 16 }}>3423243</Text>
-                    <Text style={styles.title}>3*</Text>
+                    <Text style={{ fontSize: 16, }}>{artist}</Text>
+                    <Text style={styles.title}>{status}</Text>
+                    <Text style={{ fontSize: 16 }}>{likeVote}</Text>
+                    <Text style={{ fontSize: 16 }}>{follow}</Text>
+                    <Text style={styles.title}>{vote}
+                        <Ionicons name="star" color={"orange"} /></Text>
                 </View>
             </View>
         </View>
@@ -70,7 +79,7 @@ const styles = StyleSheet.create({
     inforChildren: {
         display: "flex",
         flexDirection: "column",
-        // paddingLeft: 10,
+        // padding: 10,
     },
     title: {
         fontWeight: 600,
