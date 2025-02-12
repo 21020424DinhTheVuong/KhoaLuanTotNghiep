@@ -15,7 +15,7 @@ export class Chapter {
     @Column()
     chapter_number: number;
 
-    @OneToMany(() => Page, (page) => page.chapter)
+    @OneToMany(() => Page, (page) => page.chapter, { cascade: ['remove'], onDelete: "CASCADE" })
     pages: Page[];
     @ManyToOne(() => Book, book => book.chapters)
     @JoinColumn({ name: 'book_id' })

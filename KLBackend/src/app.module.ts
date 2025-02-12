@@ -32,6 +32,9 @@ import { ReplyPostChildren } from './entities/reply_post_children.entity';
 import { ReportController } from './modules/report/report.controller';
 import { ReportService } from './modules/report/report.service';
 import { ReportModule } from './modules/report/report.module';
+import { AdminController } from './modules/admin/admin.controller';
+import { AdminService } from './modules/admin/admin.service';
+import { AdminModule } from './modules/admin/admin.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -66,7 +69,8 @@ import { ReportModule } from './modules/report/report.module';
     AccountsModule,
     CommentModule,
     PostModule,
-    ReportModule
+    ReportModule,
+    AdminModule
     // AccountsModule,
 
   ],

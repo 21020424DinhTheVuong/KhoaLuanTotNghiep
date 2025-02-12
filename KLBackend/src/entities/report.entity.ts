@@ -9,19 +9,19 @@ export class Report {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Account, (account) => account.reportsFiled, { onDelete: "CASCADE" })
+    @ManyToOne(() => Account, (account) => account.reportsFiled, { onDelete: "SET NULL", nullable: true })
     reporter: Account; // The user who reports
 
-    @ManyToOne(() => Account, (account) => account.reportsReceived, { onDelete: "CASCADE" })
+    @ManyToOne(() => Account, (account) => account.reportsReceived, { onDelete: "SET NULL", nullable: true })
     reported: Account; // The user being reported
 
-    @ManyToOne(() => PostEntity, { nullable: true, onDelete: "CASCADE" })
+    @ManyToOne(() => PostEntity, { nullable: true, onDelete: "CASCADE", onUpdate: "CASCADE" })
     post: PostEntity; // Reported post (optional)
 
-    @ManyToOne(() => ReplyPost, { nullable: true, onDelete: "CASCADE" })
+    @ManyToOne(() => ReplyPost, { nullable: true, onDelete: "CASCADE", onUpdate: "CASCADE" })
     replyPost: ReplyPost; // Reported reply (optional)
 
-    @ManyToOne(() => ReplyPostChildren, { nullable: true, onDelete: "CASCADE" })
+    @ManyToOne(() => ReplyPostChildren, { nullable: true, onDelete: "CASCADE", onUpdate: "CASCADE" })
     replyPostChildren: ReplyPostChildren; // Reported child reply (optional)
 
     @Column({ type: "text", collation: "utf8mb4_unicode_ci" })

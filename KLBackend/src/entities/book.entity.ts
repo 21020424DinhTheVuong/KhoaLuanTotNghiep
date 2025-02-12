@@ -13,7 +13,7 @@ export class Book {
     @Column({ type: 'text', collation: 'utf8mb4_unicode_ci' })
     book_name: string; // Book name field
 
-    @Column({ type: 'text', collation: 'utf8mb4_unicode_ci' })
+    @Column({ type: 'text', collation: 'utf8mb4_unicode_ci', nullable: true })
     other_name: string
     @Column({ type: 'text', collation: 'utf8mb4_unicode_ci' })
     artist: string; // User's password
@@ -42,10 +42,10 @@ export class Book {
     @OneToMany(() => BookGenre, (bookGenre) => bookGenre.book)
     bookGenres: BookGenre[];
     @Column({ type: 'datetime', default: () => 'CURRENT_TIME' })
-    create_at: string; // Date of creation (current date)
+    create_at: Date; // Date of creation (current date)
 
     @Column({ type: 'datetime', default: () => 'CURRENT_TIME' })
-    update_at: string; // Date of creation (current date)
+    update_at: Date; // Date of creation (current date)
 
     @Column({ type: 'text', collation: 'utf8mb4_unicode_ci' })
     description: string;

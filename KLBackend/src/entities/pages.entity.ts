@@ -18,7 +18,7 @@ export class Page {
     @Column()
     chapter_number: number;
     // Relation to Chapter
-    @ManyToOne(() => Chapter, (chapter) => chapter.pages)
+    @ManyToOne(() => Chapter, (chapter) => chapter.pages, { onDelete: "CASCADE" })
     @JoinColumn({ name: 'chapter_id' })
     chapter: Chapter;
 }
