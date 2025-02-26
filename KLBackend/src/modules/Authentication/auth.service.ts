@@ -22,7 +22,7 @@ export class AuthService {
     async register(registerDto: RegisterDto): Promise<any> {
         const { username, display_name, sex, password } = registerDto;
 
-        const userExists = await this.accountRepository.findOne({ where: { username, type_account: "normal" } });
+        const userExists = await this.accountRepository.findOne({ where: { username } });
         if (userExists) {
             throw new BadRequestException('User already exists');
         }
@@ -48,7 +48,7 @@ export class AuthService {
         const { username, password } = loginDto;
 
         // Check if the account exists
-        const account = await this.accountRepository.findOne({ where: { username, type_account: "normal" } });
+        const account = await this.accountRepository.findOne({ where: { username } });
         if (!account) {
             throw new Error('Wrong username or password'); // Throw an error if account not found
         }

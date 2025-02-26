@@ -135,7 +135,7 @@ const Login = () => {
 
 
 
-            <View style={{ borderBottomWidth: 1, marginHorizontal: 150 }}>
+            {/* <View style={{ borderBottomWidth: 1, marginHorizontal: 150 }}>
                 <Text style={{ fontSize: 18, textAlign: "center", fontWeight: 600 }}>Khác</Text>
             </View>
 
@@ -145,7 +145,7 @@ const Login = () => {
 
                     <Text style={{ fontSize: 16 }}>Đăng nhập bằng Google</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
             <View style={{ marginTop: 180 }}>
                 <SnackBarCustom defaultTextColor='white' ref={snackbarRef} />
             </View>

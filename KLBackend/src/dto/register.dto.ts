@@ -16,7 +16,4 @@ export class RegisterDto {
     @IsString()
     sex: string;
 
-    type_account: "normal";
-
-    role: "user"
 }

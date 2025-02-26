@@ -79,18 +79,17 @@ export class BooksService {
         const result = await Promise.all(
             books.map(async (book) => {
                 const lastChapter = await this.chapterRepository.findOne({
-                    where: { id: book.id },
+                    where: { book_id: book.id },
                     order: { chapter_number: 'DESC' }, // Order by chapter_number in descending order
                     // select: ['chapter_number']
                 });
 
                 return {
                     ...book, // Spread book details
-                    lastChapter: lastChapter.chapter_number === null ? 0 : lastChapter.chapter_number, // Add the last chapter
+                    lastChapter: lastChapter ? lastChapter.chapter_number : 0, // Add the last chapter
                 };
             }),
         );
-
         return result;
     }
 

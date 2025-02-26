@@ -45,14 +45,6 @@ const ButtonFunction = () => {
     // console.log(user)
     return (
         <View style={styles.container}>
-            {/* <TouchableOpacity style={[styles.button, { width: "48%", backgroundColor: "#8bc34a" }]}>
-                <View style={styles.touch}>
-
-                    <Ionicons name='book' color={"white"} />
-                    <Text style={styles.functionText}>Đọc từ đầu</Text>
-                </View>
-
-            </TouchableOpacity> */}
             <TouchableOpacity style={[styles.button, { width: "48%", backgroundColor: "#ff3860" }]}>
 
                 <View style={styles.touch}>

@@ -6,13 +6,9 @@ export class CommentReply {
     @PrimaryGeneratedColumn()
     id: number;
 
-    // @Column()
-    // comment_id: number;
     @ManyToOne(() => CommentBook, (comment) => comment.replies, { onDelete: 'CASCADE' })
     comment: CommentBook;
 
-    // @Column()
-    // user_id: number;
     @ManyToOne(() => Account, (user) => user.replies, { onDelete: 'CASCADE' })
     user: Account;
 
@@ -25,6 +21,4 @@ export class CommentReply {
     @Column({ type: "int", default: 0 })
     like: number;
 
-    // @Column({ default: 0 })
-    // total_reply: number;
 }

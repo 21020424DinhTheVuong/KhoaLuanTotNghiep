@@ -77,8 +77,6 @@ export class AdminService {
             nation: book.nation,
             status: book.status,
             like_vote: book.like_vote,
-            follow: book.follow,
-            vote: book.vote,
             create_at: book.create_at,
             update_at: book.update_at,
             description: book.description,

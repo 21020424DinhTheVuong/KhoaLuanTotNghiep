@@ -36,9 +36,6 @@ export class Account {
     @UpdateDateColumn({ type: 'timestamp' })  // Auto-update on changes
     update_at: Date;
 
-    @Column({ default: 'normal' })
-    type_account: string;
-
     @OneToMany(() => CommentBook, (comment) => comment.user, { cascade: true })
     comments: CommentBook[];
 

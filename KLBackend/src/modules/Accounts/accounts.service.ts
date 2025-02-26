@@ -48,7 +48,12 @@ export class AccountsService {
         if (existingFavourite) {
             throw new Error('This book is already in your favourite list.');
         }
-
+        const book = await this.bookRepository.findOneBy({ id: bookId })
+        if (!book) {
+            throw new Error('This book is not found.');
+        }
+        book.like_vote = book.like_vote + 1;
+        await this.bookRepository.save(book)
         // Thêm sách vào danh sách yêu thích
         const favourite = this.favouriteRepository.create({ user_id: userId, book_id: bookId });
         return await this.favouriteRepository.save(favourite);

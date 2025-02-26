@@ -14,8 +14,9 @@ type VideoURI = {
 }
 const { height, width } = Dimensions.get("window")
 const VideoCustom = ({ videoUri = `${baseURL}/uploads/images_post/content_media-1738502405749-598434152.mp4`, action = () => { }, canDelete = true }: VideoURI) => {
-    const videoRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(true);
+    const videoRef = useRef<Video>(null);
+
     // console.log(ResizeMode.CONTAIN)
     useFocusEffect(
         useCallback(() => {
@@ -41,20 +42,13 @@ const VideoCustom = ({ videoUri = `${baseURL}/uploads/images_post/content_media-
                 </TouchableOpacity>
             }
 
-            <VideoPlayer
-                videoProps={{
-                    // shouldPlay: true,
-                    resizeMode: ResizeMode.COVER,
-                    source: {
-                        uri: videoUri || `${baseURL}/uploads/images_post/content_media-1738502405749-598434152.mp4`, // Đặt giá trị mặc định
-                    },
-                    // isLooping: true,
-                }}
-                style={{
-                    width: 250, height: 250,
-                }}
+            <Video
+                ref={videoRef}
+                source={{ uri: videoUri }}
+                style={{ width: 250, height: 250, borderRadius: 10 }}
+                useNativeControls
+                resizeMode={ResizeMode.COVER}
             />
-
         </View>
     )
 }
@@ -67,7 +61,7 @@ const styles = StyleSheet.create({
         height: 250,
         borderRadius: 10,
         marginRight: 10,
-        marginBottom: 10,
+        // marginBottom: 10,
         // objectFit: "cover"
     },
     deleteImage: {

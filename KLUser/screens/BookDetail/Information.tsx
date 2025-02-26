@@ -36,12 +36,12 @@ const InformationBook = ({ otherName, artist, status, likeVote, follow, vote }: 
                     <Text style={styles.title}>
                         <Ionicons name="thumbs-up" color={"blue"} />
                         Lượt thích</Text>
-                    <Text style={styles.title}>
+                    {/* <Text style={styles.title}>
                         <Ionicons name="heart" color={"red"} />
                         Lượt theo dõi</Text>
                     <Text style={styles.title}>
                         <Ionicons name="star" color={"orange"} />
-                        Đánh giá</Text>
+                        Đánh giá</Text> */}
                 </View>
 
                 <View style={styles.inforChildren}>
@@ -49,9 +49,9 @@ const InformationBook = ({ otherName, artist, status, likeVote, follow, vote }: 
                     <Text style={{ fontSize: 16, }}>{artist}</Text>
                     <Text style={styles.title}>{status}</Text>
                     <Text style={{ fontSize: 16 }}>{likeVote}</Text>
-                    <Text style={{ fontSize: 16 }}>{follow}</Text>
-                    <Text style={styles.title}>{vote}
-                        <Ionicons name="star" color={"orange"} /></Text>
+                    {/* <Text style={{ fontSize: 16 }}>{follow}</Text> */}
+                    {/* <Text style={styles.title}>{vote} */}
+                    {/* <Ionicons name="star" color={"orange"} /></Text> */}
                 </View>
             </View>
         </View>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         marginHorizontal: 40,
         paddingRight: 20,
-        columnGap: 50,
+        columnGap: 30,
         marginTop: 15
     },
     inforContainer1: {

@@ -32,11 +32,6 @@ export class Book {
     @Column({ type: 'int', default: 0 })
     like_vote: number
 
-    @Column({ type: 'int', default: 0 })
-    follow: number
-
-    @Column({ type: 'float', default: 5 })
-    vote: number;
     @OneToMany(() => Chapter, chapter => chapter.book)
     chapters: Chapter[];
     @OneToMany(() => BookGenre, (bookGenre) => bookGenre.book)
