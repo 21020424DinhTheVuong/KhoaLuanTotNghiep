@@ -30,6 +30,15 @@ export class Book {
     // @OneToMany(() => Chapter, (chapter) => chapter.book)
     // chapters: Chapter[];
     @Column({ type: 'int', default: 0 })
+    reading_times: number;
+
+    @Column('decimal', { precision: 2, scale: 1 }) 
+    rating: number;
+
+    @Column({ type: 'int', default: 0 })
+    vote: number;
+
+    @Column({ type: 'int', default: 0 })
     like_vote: number
 
     @OneToMany(() => Chapter, chapter => chapter.book)

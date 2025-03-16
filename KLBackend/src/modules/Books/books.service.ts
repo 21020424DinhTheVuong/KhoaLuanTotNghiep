@@ -147,6 +147,15 @@ export class BooksService {
 
     async getAllPages(chapterId: number): Promise<any[]> {
         // Fetch all pages associated with the given chapter_id
+        const chapter = await this.chapterRepository.findOne({
+            where:{id:chapterId}
+        })
+        const book = await this.bookRepository.findOne({
+            where:{id: chapter.book_id}
+        })
+        book.reading_times = book.reading_times + 1;
+        await this.bookRepository.save(book);
+
         const pages = await this.pageRepository.find({
             where: { chapter_id: chapterId },
             order: { page_number: 'ASC' }, // Order pages by page_number in ascending order
@@ -324,5 +333,19 @@ export class BooksService {
         }));
     }
 
+    async ratingBook(bookId:number, valueRate:number) {
+        const book = await this.bookRepository.findOne({
+            where:{id:bookId}
+        })
 
+        if(!book) {
+            throw new NotFoundException("Book not found!")
+        }
+        book.rating = Number(((book.vote * book.rating + valueRate) / (book.vote + 1)).toFixed(1));
+        book.vote = book.vote + 1;
+
+        await this.bookRepository.save(book);
+
+        return book;
+    }
 }

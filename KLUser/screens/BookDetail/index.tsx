@@ -22,8 +22,9 @@ type BookInfor = {
     nation: string;
     status: string;
     like_vote: number;
-    follow: number;
+    reading_times: number;
     vote: number;
+    rating: number;
     create_at: string;  // ISO 8601 format timestamp
     update_at: string;  // ISO 8601 format timestamp
     description: string;
@@ -64,8 +65,9 @@ export default function BookDetail() {
                     artist={bookInfor?.artist}
                     status={bookInfor?.status}
                     likeVote={bookInfor?.like_vote}
-                    follow={bookInfor?.follow}
+                    reading_times={bookInfor?.reading_times}
                     vote={bookInfor?.vote}
+                    rating={bookInfor?.rating}
                 />
                 <BookGenre id={Number(bookId)} />
                 <ButtonFunction />

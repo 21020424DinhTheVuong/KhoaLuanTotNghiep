@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { ImageService } from './image.sevice';
 import { Book } from 'src/entities/book.entity';
@@ -91,11 +91,21 @@ export class BooksController {
     ): Promise<any> {
         return this.bookService.getBooksWithFilters(genre, status, nation, filter, order);
     }
+
+
     @Get('filter-rank')
     async getBooksByStatusAndNation(
         @Query('status') status?: string,
         @Query('nation') nation?: string
     ) {
         return this.bookService.getBooksByRanking(status, nation);
+    }
+
+    @Post("rating")
+    async ratingBook(
+        @Body("bookId") bookId:number,
+        @Body("valueRate") valueRate:number,
+    ){
+        return this.bookService.ratingBook(bookId, valueRate);
     }
 }

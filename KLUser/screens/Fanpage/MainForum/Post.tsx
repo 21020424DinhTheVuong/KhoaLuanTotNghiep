@@ -95,7 +95,6 @@ const Post = ({ reportType, data, action, refreshAfterDelete }: Props) => {
                             horizontal={true}
                             showsHorizontalScrollIndicator={true}
                             contentContainerStyle={styles.scrollContent}
-                        // style={styles.scrollView}>
                         >
                             {mediaItems.map((item, index) => {
                                 const uri = `${baseURL}/${item}`;
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
         columnGap: 10,
         borderBottomWidth: 0.3,
         paddingVertical: 20,
-        marginRight: 10
+        marginRight: 50
     },
     avatarContainer: {
     },
@@ -157,7 +156,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingRight: 50,
+        paddingRight: 5,
         // marginRight: 20,
         width: "100%"
     },
