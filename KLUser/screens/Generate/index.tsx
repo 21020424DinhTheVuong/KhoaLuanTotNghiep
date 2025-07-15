@@ -10,7 +10,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const API_KEY = "AIzaSyB4Qd5vYt2Sk-fJdUG-oyURx2R26KnkHcU"; // Replace with your API key
+const API_KEY = "Your-API-Key"; // Replace with your API key
 const genAI = new GoogleGenerativeAI(API_KEY);
 const { width, height } = Dimensions.get("screen");
 const GenerateScreen: React.FC = () => {
