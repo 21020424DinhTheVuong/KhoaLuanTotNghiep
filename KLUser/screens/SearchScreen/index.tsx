@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import ButtonBack from "../../common/ButtonBack";
@@ -29,7 +29,7 @@ export default function SearchScreen() {
     const handleSearchBook = async (text: any) => {
         try {
             const response = await apiClient.get("books/search", {
-                params: { bookName: text.trim(" ") }
+                params: { bookName: text.trim() }
             })
 
             setDataSearch(response.data)
@@ -37,6 +37,10 @@ export default function SearchScreen() {
             console.log(error)
         }
     }
+
+    useEffect(() => {
+        handleSearchBook(text);
+    }, []);
     return (
         <ScrollView style={styles.container}>
             <View style={{ marginHorizontal: 20, marginTop: 10 }}>

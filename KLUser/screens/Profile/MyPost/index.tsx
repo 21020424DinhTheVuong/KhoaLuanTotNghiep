@@ -7,7 +7,12 @@ import { useAuth } from '../../../hooks/Auth/authContext'
 import { baseURL } from '../../../constants'
 import apiClient from '../../../hooks/ApiRequest/apiClient'
 
-
+type UserData = {
+    id: number,
+    display_name: string,
+    username: string,
+    avatar: string
+}
 type PostInterface = {
     id: number;
     content_text: string;
@@ -20,18 +25,31 @@ type PostInterface = {
 }
 const MyPost = () => {
     const { user } = useAuth()
+    const [userData, setUserData] = useState<UserData>()
     const [loading, setLoading] = useState(false)
     const [dataUserPost, setDataUserPost] = useState<PostInterface[]>([])
     const getUserPost = async () => {
-        // setLoading(true)
+        setLoading(true)
         try {
             const response = await apiClient.get(`posts/user/${user?.id}`);
             setDataUserPost(response.data)
+            // console.log(response.data)
+        } catch (error) {
+
+        } finally {
+            setLoading(false)
+        }
+    }
+    const getUserData = async () => {
+        try {
+            const response = await apiClient.get(`accounts/${user?.id}`);
+            setUserData(response.data);
         } catch (error) {
 
         }
     }
     useEffect(() => {
+        getUserData()
         getUserPost()
     }, [])
 
@@ -49,8 +67,8 @@ const MyPost = () => {
 
                 <View style={styles.userInforContainer}>
                     <View>
-                        <Text style={{ fontSize: 25, fontWeight: 600 }}>{user?.display_name}</Text>
-                        <Text style={{ fontSize: 18 }}>{user?.username}</Text>
+                        <Text style={{ fontSize: 25, fontWeight: 600 }}>{userData?.display_name}</Text>
+                        <Text style={{ fontSize: 18 }}>{userData?.username}</Text>
 
                         <View style={{
                             display: "flex",
@@ -59,13 +77,13 @@ const MyPost = () => {
                             marginTop: 5
                         }}>
                             <Ionicons name='mail' size={20} color={"gray"} />
-                            <Text>{user?.username}</Text>
+                            <Text>{userData?.username}</Text>
 
                         </View>
                     </View>
                     {
                         user?.avatar ?
-                            <Image source={{ uri: `${baseURL}/${user.avatar}` }} style={styles.avatar} />
+                            <Image source={{ uri: `${baseURL}/${userData?.avatar}` }} style={styles.avatar} />
                             :
                             <Image source={require("../../../assets/avatar.png")} style={styles.avatar} />
                     }
@@ -82,7 +100,8 @@ const MyPost = () => {
                         dataUserPost.length > 0 ?
                             dataUserPost.map((item, index) => (
                                 <Post key={index} reportType='user' data={item}
-                                    action={() => { likePost(item.id) }} />
+                                    action={() => { likePost(item.id) }}
+                                    refreshAfterDelete={() => getUserPost()} />
                             ))
                             :
                             <Text>Chưa có bài viết nào.</Text>

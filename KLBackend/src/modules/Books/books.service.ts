@@ -66,11 +66,41 @@ export class BooksService {
         return result;
     }
 
+    async getTopReadingBooks(): Promise<any[]> {
+        // Fetch books sorted by like_vote in descending order, limiting to 6 books
+        const books = await this.bookRepository.find({
+            take: 6, // Limit to 6 books
+            order: {
+                reading_times: 'DESC', // Order by like_vote in descending order
+            },
+            select: ['id', 'book_name', 'create_at', 'cover_image'],
+        });
+
+        // For each book, find the last chapter
+        const result = await Promise.all(
+            books.map(async (book) => {
+                // Find the last chapter for the current book
+                const lastChapter = await this.chapterRepository.findOne({
+                    where: { book_id: book.id }, // Reference book_id instead of book object
+                    order: { chapter_number: 'DESC' }, // Order by chapter_number in descending order
+                });
+
+                // Return the book with the last chapter number (if any, or 0 if not found)
+                return {
+                    ...book, // Spread book details
+                    lastChapter: lastChapter ? lastChapter.chapter_number : 0, // Handle case where no chapter is found
+                };
+            }),
+        );
+
+        return result;
+    }
+
     async getEarliestUpdatedBooks(): Promise<Book[]> {
         const books = await this.bookRepository.find({
             take: 8, // Limit to 6 books
             order: {
-                update_at: 'ASC', // Order by like_vote in descending order
+                update_at: 'DESC', // Order by like_vote in descending order
             },
             select: ['id', 'book_name', 'create_at', 'cover_image']
         });
@@ -199,13 +229,21 @@ export class BooksService {
     }
 
     async searchBooks(bookName: string): Promise<any> {
-        const books = await this.bookRepository
+        let books = null;
+
+            if(bookName != '') {
+                books = await this.bookRepository
+                .createQueryBuilder('book')
+                .where('book.book_name LIKE :bookName', { bookName: `%${bookName}%` })
+                .orWhere('book.other_name LIKE :bookName', { bookName: `%${bookName}%` }) // Thêm điều kiện tìm trong `other_name`
+                .select(['book.id', 'book.book_name', 'book.other_name', 'book.cover_image', 'book.create_at'])
+                .getMany();
+            } else {
+                books = await this.bookRepository
             .createQueryBuilder('book')
-            .where('book.book_name LIKE :bookName', { bookName: `%${bookName}%` })
-            .orWhere('book.other_name LIKE :bookName', { bookName: `%${bookName}%` }) // Thêm điều kiện tìm trong `other_name`
             .select(['book.id', 'book.book_name', 'book.other_name', 'book.cover_image', 'book.create_at'])
             .getMany();
-
+            }
         // Lấy chương mới nhất cho từng sách
         const result = await Promise.all(
             books.map(async (book) => {

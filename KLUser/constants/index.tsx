@@ -1,6 +1,6 @@
-export const baseURL = "http://172.168.10.167:3300"
-// export const baseURL = "http://192.168.1.12:3300"
-// export const baseURL = "http://192.168.1.5:3300"
+// export const baseURL = "http://172.168.10.167:3300"
+// export const baseURL = "http://10.10.104.84:3300"
+export const baseURL = "http://192.168.236.126:3300"
 
 import moment from 'moment';
 import 'moment/locale/vi'; // Import Vietnamese locale

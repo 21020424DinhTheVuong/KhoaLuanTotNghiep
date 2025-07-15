@@ -24,6 +24,12 @@ const DATA2 = [
         link: "forum",
         screen: "ForumScreen"
     },
+    {
+        id: '2',
+        title: 'Sáng tác',
+        link: "generate",
+        screen: "Generate"
+    },
 ]
 const itemDropDownGenre = [
     { id: 1, title: "Action", link: "action" },

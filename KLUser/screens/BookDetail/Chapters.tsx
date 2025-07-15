@@ -37,7 +37,7 @@ const Chapters = ({ id }: IDBook) => {
 
     const [page, setPage] = useState(1);
     const [chapters, setChapters] = useState<ChapterInterface[]>([]);
-    const [totalPage, setTotalPage] = useState(0)
+    const [totalPage, setTotalPage] = useState(1)
     const [totalChapter, setTotalChapter] = useState(0)
     const [bookName, setBookName] = useState("")
     const fetchChapters = async () => {
@@ -47,7 +47,7 @@ const Chapters = ({ id }: IDBook) => {
             setTotalChapter(response.data.total)
             setBookName(response.data.book_name)
             // console.log(response.data.data)
-            setTotalPage(response.data.totalPages)
+            setTotalPage(response.data.totalPages === 0 ? 1 : response.data.tottalPages)
         } catch (error) {
             console.error(error);
         }

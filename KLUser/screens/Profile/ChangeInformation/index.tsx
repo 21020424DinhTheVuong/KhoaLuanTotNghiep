@@ -63,7 +63,7 @@ const ChangeInformation = () => {
 
         if (!result.canceled) {
             setAvatar(result.assets[0].uri);
-            console.log(result.assets[0])
+            // console.log(result.assets[0])
             setAvatarFile({
                 uri: result.assets[0].uri,
                 type: result.assets[0].mimeType,

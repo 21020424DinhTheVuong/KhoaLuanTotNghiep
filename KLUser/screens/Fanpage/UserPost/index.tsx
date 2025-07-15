@@ -12,18 +12,22 @@ import VideoCustom from '../MainForum/Video'
 import { useAuth } from '../../../hooks/Auth/authContext'
 import { baseURL } from '../../../constants'
 import apiClient from '../../../hooks/ApiRequest/apiClient'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 type Props = {}
 const { height, width } = Dimensions.get("screen")
 function UserPost() {
     const { user } = useAuth()
+    const route = useRoute<any>();
+    // console.log(route);
+    const imageUrl = route.params != undefined ? route.params.imageUrl : "";
+    // const imageUrl = "";
     const [loading, setLoading] = useState(false)
     const navigation = useNavigation<any>()
     const [contentPost, setContentPost] = useState('')
 
-    const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
-
+    const [selectedMedia, setSelectedMedia] = useState<any[]>(imageUrl ? [{ uri: imageUrl, type: "image/jpeg", name: "generate" }] : []);
+    // console.log(selectedMedia)
     const selectImages = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ['images', 'videos'], // Allow images only
@@ -42,6 +46,8 @@ function UserPost() {
             }));
 
             setSelectedMedia(mediaData);
+            // console.log(selectedMedia)
+
         }
 
     };
@@ -259,7 +265,7 @@ function UserPost() {
                 opacity: contentPost.trim() === "" ? 0.6 : 1
             }}>
                 <TouchableOpacity onPress={() => { uploadPost(); }}
-                    disabled={contentPost.trim() === "" ? true : false}
+                    disabled={contentPost.trim() === "" || loading === true ? true : false}
                 >
                     <Text style={{ color: "white", fontSize: 25, fontWeight: 600 }}>Đăng</Text>
                 </TouchableOpacity>

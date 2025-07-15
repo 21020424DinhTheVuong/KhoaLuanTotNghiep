@@ -8,6 +8,7 @@ import Profile from '../screens/Profile';
 import LoginRegister from '../screens/LoginRegister';
 import ForumScreen from '../screens/Fanpage';
 import { AuthProvider, useAuth } from '../hooks/Auth/authContext';
+import GenerateScreen from '../screens/Generate';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -28,6 +29,8 @@ export default function AppNavigation() {
 
                             <Stack.Screen name="Profile" component={Profile} />
                             <Stack.Screen name='ForumScreen' component={ForumScreen} />
+                            <Stack.Screen name='Generate' component={GenerateScreen} />
+
                         </>
                     )
 

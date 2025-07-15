@@ -27,7 +27,7 @@ function UserPost() {
 
             <View>
                 <Text style={{ fontSize: 17, fontWeight: 700 }}>{user?.display_name}</Text>
-                <TouchableOpacity onPress={() => { navigation.navigate("UserPost") }}>
+                <TouchableOpacity onPress={() => { navigation.navigate("UserPost", { imageUrl: "a" }) }}>
 
                     <View style={{ marginVertical: 10 }}>
                         <Text style={{ color: "gray" }}>

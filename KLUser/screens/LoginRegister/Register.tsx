@@ -54,7 +54,7 @@ const Register = () => {
                 sex: selectedSex,
                 password: data.password
             });
-            console.log(response.data);
+            // console.log(response.data);
             handleShowSnackbar
         } catch (error: any) {
             handleShowSnackbar("Tài khoản đã tồn tại!", "red")

@@ -14,6 +14,8 @@ import Comment from '../Comment';
 import Reading from '../Reading';
 import Header from '../../common/Header';
 import FilterGenre from '../FilterGenre';
+import GenerateScreen from '../Generate';
+import ReadingTimesBook from './ReadingTimesBook';
 
 
 const Drawer = createDrawerNavigator();
@@ -69,6 +71,10 @@ function Home({ navigation }: any) {
             <View style={{ paddingHorizontal: 10 }}>
                 <NewUpdateBook />
             </View>
+
+            <View style={{ paddingHorizontal: 10 }}>
+                <ReadingTimesBook />
+            </View>
             <View>
                 <Footer />
             </View>
@@ -96,6 +102,8 @@ export default function HomeScreen() {
             {/* <Stack.Screen name="BookDetail" component={BookDetail} /> */}
             {/* <Stack.Screen name="Comment" component={Comment} /> */}
             {/* <Stack.Screen name="Reading" component={Reading} /> */}
+            <Stack.Screen name="Generate" component={GenerateScreen} />
+
             <Stack.Screen name="RankBook" component={RankBook} />
 
         </Stack.Navigator>

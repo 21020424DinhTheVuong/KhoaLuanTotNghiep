@@ -61,7 +61,7 @@ export default function GenreTable() {
                         <TableRow sx={{ border: 1 }} key={item.id} >
 
                             <TableCell align="center" component="th" scope="row" sx={{ borderRight: 1, borderBottom: 1 }}>
-                                {index}
+                                {index + 1}
                             </TableCell>
 
                             <TableCell align="center" sx={{ borderRight: 1, borderBottom: 1 }}>{item.type}</TableCell>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, Dimensions, Image, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Button, ScrollView, Dimensions, Image, ActivityIndicator, FlatList } from 'react-native'
 import ButtonBack from '../../common/ButtonBack'
 import { Ionicons } from '@expo/vector-icons'
 import Modal from 'react-native-modal'

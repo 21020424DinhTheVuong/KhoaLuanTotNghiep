@@ -95,11 +95,11 @@ const DetailBook: React.FC<BookDetail> = ({ id, book_name, other_book_name, arti
                 <AddChapter book_id={id} chapters={chapters} book_name={book_name} />
 
             </BoxActionButton>
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            {/* <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Button variant="outlined" startIcon={<Delete />} onClick={() => { deleteBook() }}
                     style={{ color: "red" }}
                 >Delete</Button>
-            </Box>
+            </Box> */}
         </Box>
 
     )

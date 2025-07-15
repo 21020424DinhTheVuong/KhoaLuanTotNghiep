@@ -114,9 +114,9 @@ const Login = () => {
             {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
 
             <View style={styles.otherFunction}>
-                <TouchableOpacity>
+                {/* <TouchableOpacity>
                     <Text style={{ textDecorationLine: "underline", color: "red", fontSize: 16 }}>Quên mật khẩu</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity onPress={() => { navigation.navigate("Register") }}>
                     <Text style={{ textDecorationLine: "underline", color: "red", fontSize: 16 }}>Chưa có tài khoản?</Text>
                 </TouchableOpacity>

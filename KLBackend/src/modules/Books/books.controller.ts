@@ -45,6 +45,10 @@ export class BooksController {
     async getTopBooks(): Promise<Book[]> {
         return this.bookService.getTopBooks();
     }
+    @Get('reading-times')
+    async getTopReadingBooks(): Promise<Book[]> {
+        return this.bookService.getTopReadingBooks();
+    }
     @Get("new")
     async getNewUpdateBooks(): Promise<Book[]> {
         return this.bookService.getEarliestUpdatedBooks()
